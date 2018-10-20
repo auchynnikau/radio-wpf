@@ -1,0 +1,405 @@
+﻿<Window x:Class="Radio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Radio"
+        mc:Ignorable="d"
+    
+        WindowStartupLocation="CenterScreen"
+        Icon="icons/MainIcon.png" 
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Cursor="Arrow"  
+        Height="430" 
+        Width="420"
+        >
+    <!-- Styles -->
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" 
+                                   SnapsToDevicePixels="true" 
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                                   StrokeThickness="1" StrokeDashArray="1 2"
+                                   />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+        <!-- Styles for Buttons -->
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="true"
+                                >
+                            <ContentPresenter x:Name="contentPresenter" 
+                                              Focusable="False" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              RecognizesAccessKey="True" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" 
+                                        TargetName="border" 
+                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                                        />
+                            </Trigger>
+
+                            <!--<Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>-->
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styles for Menu -->
+        <ControlTemplate x:Key="MenuItemControlTemplate1" TargetType="{x:Type MenuItem}">
+            <Border x:Name="templateRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter x:Name="Icon" Content="{TemplateBinding Icon}" ContentSource="Icon" HorizontalAlignment="Center" Height="16" Margin="3" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16"/>
+                    <Path x:Name="GlyphPanel" Data="F1M10,1.2L4.7,9.1 4.5,9.1 0,5.2 1.3,3.5 4.3,6.1 8.3,0 10,1.2z" Fill="#FF212121" FlowDirection="LeftToRight" Margin="3" Visibility="Collapsed" VerticalAlignment="Center"/>
+                    <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="1" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" TargetName="templateRoot" Value="#19525252"/>
+                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="#7F888888"/>
+                </Trigger>
+
+                <!--<Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="#FF707070"/>
+                    <Setter Property="Fill" TargetName="GlyphPanel" Value="#FF707070"/>
+                </Trigger>-->
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsHighlighted" Value="True"/>
+                        <Condition Property="IsEnabled" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" TargetName="templateRoot" Value="#0A000000"/>
+                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="#21000000"/>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <!-- Main Panel -->
+    <StackPanel Background="#FFF3F3F3" 
+                Cursor="Arrow"
+                >
+
+        <!-- The header of the window -->
+
+        <!-- Menu -->
+        <!-- The header of the window -->
+        <StackPanel MouseLeftButtonDown="Border_MouseMove"
+                    Orientation="Horizontal"
+                    Background="#FF525252"
+                    Cursor="Arrow"
+                    Height="30"
+                    >
+
+            <!-- Panel for Logo and Name of the programm -->
+            <StackPanel Orientation="Horizontal"
+                        Width="100"
+                        >
+
+                <!-- Logo icon -->
+                <Label VerticalContentAlignment="Center"
+                       Height="22"
+                       Width="38"
+                       >
+                    <Label.Background>
+                        <ImageBrush ImageSource="icons/MainIcon.png" Stretch="Uniform"/>
+                    </Label.Background>
+                </Label>
+
+                <!-- Programm name -->
+                <Label Foreground="#FFF3F3F3"
+                       FontFamily="Segoe UI"
+                       Padding="0,2.5,0,0"
+                       FontWeight="Light"
+                       Content="Bitradio" 
+                       FontSize="17"
+                       />
+            </StackPanel>
+
+            <!-- Panel for Buttons Close and Hide -->
+            <StackPanel Orientation="Horizontal"
+                        Margin="265,0,0,0"
+                        >
+
+                <!-- Button Hide -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        VerticalAlignment="Center"
+                        Click="ButtonHide_Click"
+                        x:Name="ButtonHide"
+                        BorderThickness="0"
+                        ToolTip="Minimize"
+                        Cursor="Hand"
+                        Height="25"
+                        Width="25"
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Hide.png"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Button Close -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        VerticalAlignment="Center" 
+                        Click="ButtonClose_Click"
+                        x:Name="ButtonClose"
+                        BorderThickness="0"
+                        ToolTip="Close"
+                        Cursor="Hand"
+                        Height="25"
+                        Width="25"
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Close.png"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Menu -->
+        <Menu Foreground="#FF525252"
+              Background="#FFF3F3F3"
+              FontFamily="Segoe UI"
+              FontWeight="Light"
+              Margin="0,0,0,-10" 
+              Panel.ZIndex="1"
+              FontSize="13"  
+              Height="25" 
+              >
+
+            <!-- Menu item Info -->
+            <MenuItem Template="{DynamicResource MenuItemControlTemplate1}"
+                      ToolTip="Look information about the program"
+                      BorderThickness="0"
+                      Padding="0,2.5,0,0" 
+                      Click="Info_Click" 
+                      Margin="7,0,0,0" 
+                      Cursor="Hand" 
+                      Header="Info" 
+                      Width="65" 
+                      >
+                <MenuItem.Icon>
+                    <Image Source="icons/InfoMain.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <!-- Menu item Author -->
+            <MenuItem Template="{DynamicResource MenuItemControlTemplate1}"  
+                      ToolTip="Look information about the author"
+                      x:Name="Authors"
+                      Foreground="#FF525252"
+                      Click="Author_Click"
+                      BorderThickness="0"
+                      Padding="0,2.5,0,0"
+                      Header="Author" 
+                      Cursor="Hand" 
+                      Width="65"
+                      >
+                <MenuItem.Icon>
+                    <Image Source="icons/AuthorMain.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </Menu>
+
+        <!-- GIF Animation -->
+        <MediaElement MediaEnded="singularity_MediaEnded"
+                      UnloadedBehavior="Manual"
+                      Source="singularity.gif"
+                      LoadedBehavior="Play"
+                      x:Name="singularity"
+                      Cursor="Arrow"
+                      Height="305"    
+                      />
+
+        <!-- TextBox for URL -->
+        <TextBox ToolTip="Input the radiostation's URL"
+                 VerticalContentAlignment="Center"
+                 SelectionBrush="#FF9C9C9C"
+                 Foreground="#FFF3F3F3"
+                 Background="#FF525252"
+                 BorderThickness="0"
+                 FontWeight="Light"
+                 x:Name="textBox" 
+                 FontSize="14"
+                 Width="380"
+                 Height="25"
+                 Text=""        
+                 />
+
+        <!-- Panel for main buttons -->
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,8,0,0"
+                    >
+
+            <!-- Left StackPanel for Playlist and AddToPlaylist buttons -->
+            <StackPanel Orientation="Horizontal" Margin="12,0,50,0">
+
+                <!-- Button Playlist -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        Click="ButtonList_Click"
+                        ToolTip="Open playlist"
+                        BorderThickness="0"
+                        x:Name="ButtonList"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"
+                        Content=""
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Playlist.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Button AddToPlaylist -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        ToolTip="Add this link to the playlist"
+                        BorderThickness="0"
+                        x:Name="ButtonAdd"
+                        Click="Add_Click"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"
+                        Content=""
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/AddToPlaylist.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+
+            <!-- Central StackPanel for Recording, Play and Stop buttons -->
+            <StackPanel Orientation="Horizontal" Margin="10,0,20,0">
+
+                <!-- Button Recording -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        ToolTip="Start/Stop recording"
+                        Click="ButtonRecording_Click"
+                        x:Name="ButtonRecording"
+                        BorderThickness="0" 
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"
+                        Content=""
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/StartRecording.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Button Play -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        x:Name="ButtonPlay"
+                        BorderThickness="0"
+                        Click="Play_Click"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"
+                        Content=""
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Play.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Button Stop -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        x:Name="ButtonStop"
+                        BorderThickness="0"
+                        Click="Stop_Click"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"
+                        Content=""
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Stop.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+
+            <!-- Right StackPanel for Slider -->
+            <StackPanel VerticalAlignment="Center">
+                <Slider IsSelectionRangeEnabled="True"
+                        ValueChanged="Slider_Value"
+                        SelectionEnd="100"
+                        x:Name="Slider" 
+                        Maximum="100"
+                        Cursor="Hand"
+                        Width="113"
+                        Value="100"
+                        >
+                    <Slider.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FD525252" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkDarkBrushKey}" Color="#FD525252" />
+                    </Slider.Resources>
+                </Slider>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>

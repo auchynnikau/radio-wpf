@@ -1,0 +1,244 @@
+﻿<Window x:Class="Radio.Playlist"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Radio"
+        mc:Ignorable="d"
+        
+        WindowStartupLocation="CenterOwner"
+        Icon="icons/Playlist.png" 
+        Background="#FF525252"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Title="Playlist"
+        Height="430"
+        Width="420"
+        >
+
+    <!-- Styles -->
+    <Window.Resources>
+        
+        <!-- Styles for Buttons -->
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+
+                            <!--<Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>-->
+                            
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Styles for ListBox -->
+        <SolidColorBrush x:Key="ListBox.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FFABADB3"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
+        <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="{StaticResource ListBox.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ListBox.Static.Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="1" SnapsToDevicePixels="true">
+                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Border}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsGrouping" Value="true"/>
+                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Main Panel -->
+    <StackPanel Orientation="Vertical">
+        
+        <!-- Header -->
+        <StackPanel MouseLeftButtonDown="Border_MouseMove"
+                    Orientation="Horizontal"
+                    Background="#FF525252"
+                    Cursor="Arrow"
+                    Height="30"
+                    >
+            <!-- Panel for Logo and Header of the window -->
+            <StackPanel Orientation="Horizontal"
+                        Width="90"
+                        >
+                
+                <!-- Logo icon -->
+                <Label VerticalContentAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Height="20"
+                       Width="38"
+                       >
+                    <Label.Background>
+                        <ImageBrush ImageSource="icons/ListIcon.png" Stretch="Uniform"/>
+                    </Label.Background>
+                </Label>
+                
+                <!-- Header of the window -->
+                <Label Foreground="#FFF3F3F3"
+                       FontFamily="Segoe UI"
+                       Padding="0,2.5,0,0"
+                       FontWeight="Light"
+                       Content="Playlist"
+                       FontSize="17"
+                       />
+            </StackPanel>
+
+            <!-- Button Close -->
+            <Button Style="{DynamicResource ButtonStyle1}"
+                    VerticalAlignment="Center"
+                    Click="ButtonClose_Click"
+                    x:Name="ButtonClose"
+                    BorderThickness="0"
+                    Margin="300,0,0,0"
+                    Cursor="Hand"
+                    Height="25"
+                    Width="25"
+                    >
+                <Button.Background>
+                    <ImageBrush ImageSource="icons/Close.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+
+        
+        
+        <!-- Content Panel -->
+        <StackPanel Orientation="Horizontal"
+                    Height="400"
+                    >
+            <!-- Panel for the main buttons (Refresh, Confirm, Delete) -->
+            <StackPanel Orientation="Vertical">
+                <!-- Button Refresh -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        Click="ButtonRefresh_Click"
+                        BorderThickness="0"
+                        x:Name="Refresh"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Refresh.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Button Confirm -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        Click="Confirm_Click"
+                        BorderThickness="0"                        
+                        x:Name="Confirm"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40" 
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Confirm.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Button Delete -->
+                <Button Style="{DynamicResource ButtonStyle1}"
+                        Click="ButtonDelete_Click"
+                        BorderThickness="0"
+                        x:Name="Delete"
+                        Cursor="Hand"
+                        Height="40"
+                        Width="40"  
+                        >
+                    <Button.Background>
+                        <ImageBrush ImageSource="icons/Delete.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+
+            <!-- ListBox -->
+            <ListBox Style="{DynamicResource ListBoxStyle1}"
+                     Background="#FF525252"
+                     Foreground="#FFF3F3F3"
+                     FontFamily="Segoe UI"
+                     BorderThickness="0"
+                     FontWeight="Light"
+                     x:Name="listBox"
+                     FontSize="14"
+                     Height="380"
+                     Width="370" 
+                     />
+        </StackPanel>
+    </StackPanel>
+</Window>
