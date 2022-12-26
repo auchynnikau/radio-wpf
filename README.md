@@ -1,3 +1,3 @@
 # radio-wpf
 
-Desktop Radio app
+Desktop radio app
